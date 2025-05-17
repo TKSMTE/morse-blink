@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Morse Blink</title>
+  <style>
+    body {
+      background: #000;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .light {
+      width: 120px;
+      height: 120px;
+      background: #111;
+      border-radius: 50%;
+      box-shadow: 0 0 20px #000;
+      transition: background 0.1s, box-shadow 0.1s;
+    }
+    .on {
+      background: yellow;
+      box-shadow: 0 0 60px yellow;
+    }
+  </style>
+</head>
+<body>
+  <div class="light" id="light"></div>
+
+  <script>
+    const light = document.getElementById('light');
+
+    // Timing in milliseconds
+    const unit = 300;
+    const dot = unit;
+    const dash = unit * 3;
+    const gap = unit;
+    const letterGap = unit * 3;
+    const endPause = 3000; // 3 seconds pause at end
+
+    // Morse code for 'NAVY' = -. .- ...- -.-- 
+    const morse = [
+      ['-', '.'],              // N
+      ['.', '-'],              // A
+      ['.', '.', '.', '-'],    // V
+      ['-', '.', '-', '-']     // Y
+    ];
+
+    // Build timing sequence
+    const sequence = [];
+    morse.forEach((letter, li) => {
+      letter.forEach((symbol, si) => {
+        sequence.push(symbol === '.' ? dot : dash); // light on
+        sequence.push(gap);                         // light off (between symbols)
+      });
+      sequence.pop(); // remove last gap
+      if (li < morse.length - 1) {
+        sequence.push(letterGap); // gap between letters
+      }
+    });
+    sequence.push(endPause); // pause before repeating
+
+    let i = 0;
+    function blink() {
+      const duration = sequence[i];
+      if (i % 2 === 0) {
+        light.classList.add('on'); // turn on
+      } else {
+        light.classList.remove('on'); // turn off
+      }
+      setTimeout(() => {
+        i = (i + 1) % sequence.length;
+        blink();
+      }, duration);
+    }
+
+    blink();
+  </script>
+</body>
+</html>
