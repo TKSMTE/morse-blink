@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Morse Blink</title>
+  <style>
+    body {
+      background: #000;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .light {
+      width: 120px;
+      height: 120px;
+      background: #111;
+      border-radius: 50%;
+      box-shadow: 0 0 20px #000;
+      transition: background 0.1s, box-shadow 0.1s;
+    }
+    .on {
+      background: yellow;
+      box-shadow: 0 0 60px yellow;
+    }
+  </style>
+</head>
+<body>
+  <div class="light" id="light"></div>
+
+  <script>
+    const light = document.getElementById('light');
+
+   
+    const pattern = [
+      900, 300,   // -
+      300, 900,   // .
+      300, 300,   // .
+      900, 900,   // -
+      300, 300,   // letter space
+      300, 300,   // .
+      300, 300,   // -
+      900, 900,   // letter space
+      900, 300,
+      300, 300,
+      900, 300,
+      900, 3000,
+    ];
+
+    let index = 0;
+
+    function run() {
+      const dur = pattern[index];
+      if (index % 2 === 0) {
+        light.classList.add('on');  // ไฟเปิด
+      } else {
+        light.classList.remove('on'); // ไฟปิด
+      }
+      setTimeout(() => {
+        index = (index + 1) % pattern.length;
+        run();
+      }, dur);
+    }
+
+    run();
+  </script>
+</body>
+</html>
